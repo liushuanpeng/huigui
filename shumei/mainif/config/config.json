@@ -1,0 +1,18 @@
+{
+    "ReqImgHost": {
+        "host" : "",
+        "port" : "",
+    },
+    "SaasOrgDB": {
+        "Host":"10.141.5.248",
+        "Port":3312,
+        "User":"root",
+        "Password":"5FEBgxpD7vvWTUeOPhCIAw==",
+        "DbName" : "saas",
+        "ConnTimeout" : 1000,
+        "ReadTimeout" : 5000,
+        "WriteTimeout" : 500,
+        "MaxOpenConn" : 2000,
+        "MaxIdleConn" : 100
+    }
+}
