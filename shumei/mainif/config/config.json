@@ -4,10 +4,10 @@
         "port" : "",
     },
     "SaasOrgDB": {
-        "Host":"10.141.5.248",
-        "Port":3312,
+        "Host":"10.141.0.234",
+        "Port":3306,
         "User":"root",
-        "Password":"5FEBgxpD7vvWTUeOPhCIAw==",
+        "Password":"shumeiShumei2016",
         "DbName" : "saas",
         "ConnTimeout" : 1000,
         "ReadTimeout" : 5000,
