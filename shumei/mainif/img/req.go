@@ -4,8 +4,10 @@ import (
 	"bytes"
 	//"encoding/json"
 	//"errors"
+	"code.aliyun.com/module-go/protocols/image/kitex_gen/shumei/strategy/re"
 	"github.com/google/go-cmp/cmp"
     "shumei/mainif/config"
+    "shumei/mainif/rpc"
 	//"github.com/tidwall/gjson"
 	"io/ioutil"
 	"math"
@@ -32,27 +34,9 @@ type ReqData struct {
 
 func (this *Img) Predict(reqesutId string, reqParam ReqData) {
 	start := time.Now().UnixNano()
-	client := &http.Client{Timeout: 20 * time.Second}
-	url := "http://" + config.Conf.ConfigMap.ReqImgHost.Host + ":" + config.Conf.ConfigMap.ReqImgHost.Port + reqParam.Url
-	req, errIgnore := http.NewRequest("POST", url, bytes.NewBuffer([]byte(reqParam.ReqParams)))
-	if errIgnore != nil {
-		fmt.Println("NewRequest errIgnore", errIgnore)
-		return
-	}
-	req.Header.Set("Content-Type", "application/json;charset=utf-8")
-	req.Header.Set("m_request_id", reqParam.RequestId)
-	req.Header.Set("m_organization", reqParam.Organization)
-	resp, errIgnore := client.Do(req)
-	if errIgnore != nil {
-		fmt.Println("client.Do Err:", errIgnore)
-		return
-	}
-	defer resp.Body.Close()
-	respBytes, errIgnore := ioutil.ReadAll(resp.Body)
-	if errIgnore != nil {
-        fmt.Println("ReadAll Err:", errIgnore)
-        return
-	}
+	reqParam := re.ImagePredictRequest{}
+	respBytes, errr := rpc.reImageClientModel.Predict(&reqParam)
+	rpc.reImageClientModel.Version()
 	ret := string(respBytes)
     fmt.Println("rrrrrrrrr:", ret)
 	this.DiffResult(ret, reqParam.RetParams)
