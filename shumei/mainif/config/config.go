@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+    "net"
 	"io/ioutil"
 	"os"
 )
@@ -62,11 +63,45 @@ type MysqlConf struct {
 }
 
 type ImgHost struct {
-	host string
-	port string
+	Host string
+	Port string
+}
+
+type KitexConf struct {
+    MaxConnections int
+    MaxQPS         int
+    Weight         int    
+}
+
+type BasicConf struct {
+    ZkServers             string
+    ZkPath                string
+    Pwdencrypted          bool
+    TextMaxLength         int
+    MaxCpuPercent         int32
+    MaxMemPercent         int32
+    InetPrefix            string
 }
 
 type TotalConf struct {
-	SaasOrgDB  MysqlConf
-	ReqImgHost ImgHost
+    BasicC        BasicConf
+    KitexConfig   KitexConf
+	SaasOrgDB     MysqlConf
+	ReqImgHost    ImgHost
+}
+
+func GetLocalHost() (string, error) {
+    addrs, err := net.InterfaceAddrs()
+    if err != nil {
+        return "", err
+    }
+    for _, a := range addrs {
+        if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+            if ipnet.IP.To4() != nil {
+                myhost := ipnet.IP.String()
+                return myhost, nil
+            }
+        }
+    }
+    return "", nil
 }
